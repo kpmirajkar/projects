@@ -137,13 +137,7 @@ public class Graph {
     Collections.sort(edges, new Comparator<Edge>() {
       @Override
       public int compare(Edge o1, Edge o2) {
-        if (o1.getWeight() < o2.getWeight()) {
-          return -1;
-        } else if (o1.getWeight() > o2.getWeight()) {
-          return 1;
-        }
-        return 0;
-
+        return o1.getWeight() - o2.getWeight();
       }
     });
   }
