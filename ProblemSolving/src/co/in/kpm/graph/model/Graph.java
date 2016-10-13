@@ -208,8 +208,8 @@ public class Graph {
   }
 
 
-  /*
-   * Graph1 in graphs.txt
+  /**
+   * Graph2 in graphs.txt
    */
   public static Graph buildGraph2() {
     Graph g = new Graph("Undirected graph For Prim's Algorithm");
