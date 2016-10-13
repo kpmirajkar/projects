@@ -1,6 +1,5 @@
 package co.in.kpm.graph.algos;
 
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -13,14 +12,18 @@ import co.in.kpm.graph.model.Vertex;
  * Single Source MST . Implementation of the algorithm as in
  * "Introduction to Algorithms" Cormen, Leiserson, Rivest, Stein. Third edition.
  * 
+ * NOTE: This version is more aligned to the Algorithm as mentioned the book.
+ * However I prefer Prim.java as it is more intuitive.
+ * 
  * @author Krishna Murthy P Mirajkar
  *
  */
-public class Prim {
+
+public class Prim2 {
   private final Graph graph;
   private static final int INFINITY = Integer.MAX_VALUE;
 
-  public Prim(final Graph graph) {
+  public Prim2(final Graph graph) {
     this.graph = graph;
   }
 
@@ -46,21 +49,15 @@ public class Prim {
     Vertex rootVertex = graph.getVertex(root);
     initializeSingleSource(rootVertex);
 
-    Set<Vertex> visited = new LinkedHashSet<>();
-    visited.add(rootVertex);
-
-    Queue<Vertex> queue = new LinkedList<>();
-    queue.offer(rootVertex);
+    Queue<Vertex> queue = new LinkedList<>(graph.getVertices());
     while (!queue.isEmpty()) {
       Vertex u = queue.poll();
       List<Vertex> adjacentVertices = graph.getAdjacentVertices(u);
       for (Vertex v : adjacentVertices) {
         int edgeWeight = graph.getWeight(u, v);
-        if (!visited.contains(v) && edgeWeight < v.getKey()) {
+        if (queue.contains(v) && edgeWeight < v.getKey()) {
           v.setParent(u);
           v.setKey(edgeWeight);
-          visited.add(v);
-          queue.offer(v);
           System.out.println("\t after setting parent  " + u + "   :" + adjacentVertices);
         } else {
           System.out.println("\t queue contains " + v + "=" + queue.contains(v) + ", weight=" + edgeWeight);
@@ -68,12 +65,18 @@ public class Prim {
       }
       System.out.println();
     }
-    System.out.println(visited);
+    printMST();
+  }
+
+  private void printMST() {
+    for (Vertex vertex : graph.getVertices()) {
+      System.out.println(vertex);
+    }
   }
 
   public static void main(String[] args) {
     Graph graph = Graph.buildGraph2();
-    Prim prim = new Prim(graph);
+    Prim2 prim = new Prim2(graph);
     prim.algo("A");
   }
 }

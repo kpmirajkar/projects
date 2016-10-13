@@ -19,106 +19,95 @@ public class Graph {
 
   private Map<Vertex, List<Edge>> adjacentEdgeMap = new LinkedHashMap<>();
 
-
   public Graph(final String name) {
     this.name = name;
   }
 
-
   public void addEdge(String vertex1, String vertex2, int weight) {
     Vertex v1 = null;
     Vertex v2 = null;
-    if(!vertices.contains(getVertex(vertex1))) {
+    if (!vertices.contains(getVertex(vertex1))) {
       v1 = new Vertex(null, vertex1, weight);
       vertices.add(v1);
-    }
-    else {
+    } else {
       v1 = getVertex(vertex1);
     }
 
-    if(!vertices.contains(getVertex(vertex2))) {
+    if (!vertices.contains(getVertex(vertex2))) {
       v2 = new Vertex(null, vertex2, weight);
       vertices.add(v2);
-    }
-    else {
+    } else {
       v2 = getVertex(vertex2);
     }
     Edge edge = new Edge(v1, v2, weight);
     edges.add(edge);
 
     List<Edge> list = adjacentEdgeMap.get(v1);
-    if(list == null) {
+    if (list == null) {
       list = new ArrayList<>();
     }
     list.add(edge);
     adjacentEdgeMap.put(v1, list);
 
     list = adjacentEdgeMap.get(v2);
-    if(list == null) {
+    if (list == null) {
       list = new ArrayList<>();
     }
     list.add(edge);
     adjacentEdgeMap.put(v2, list);
   }
 
-
   public List<Edge> getEdges() {
     return Collections.unmodifiableList(edges);
   }
-
 
   public Set<Vertex> getVertices() {
     return vertices;
   }
 
-
   public int getWeight(Vertex v1, Vertex v2) {
-    for(Edge edge : edges) {
-      if(edge.getVertex1().equals(v1) && edge.getVertex2().equals(v2)) {
+    for (Edge edge : edges) {
+      if ((edge.getVertex1().equals(v1) && edge.getVertex2().equals(v2))
+          || (edge.getVertex1().equals(v2) && edge.getVertex2().equals(v1))) {
         return edge.getWeight();
       }
     }
     return Integer.MAX_VALUE;
   }
 
-
   public List<Edge> getAdjacentEdges(Vertex vertex) {
     return Collections.unmodifiableList(adjacentEdgeMap.get(vertex));
   }
 
-
   public Set<Edge> getAdjacentOutgoingEdges(Vertex vertex) {
     List<Edge> allAdjacentEdges = adjacentEdgeMap.get(vertex);
     Set<Edge> outgoingEdges = new HashSet<>();
-    for(Edge edge : allAdjacentEdges) {
-      if(edge.getVertex1().equals(vertex)) {
+    for (Edge edge : allAdjacentEdges) {
+      if (edge.getVertex1().equals(vertex)) {
         outgoingEdges.add(edge);
       }
     }
     return Collections.unmodifiableSet(outgoingEdges);
   }
 
-
   public List<Vertex> getAdjacentVertices(Vertex vertex) {
     List<Edge> adjacentEdges = getAdjacentEdges(vertex);
     // System.out.println("\t\t " + vertex + ": adjacent Edges :" +
     // adjacentEdges);
     List<Vertex> adjacentVertices = new ArrayList<>();
-    for(Edge edge : adjacentEdges) {
+    for (Edge edge : adjacentEdges) {
       adjacentVertices.add(edge.getOtherVertex(vertex));
     }
     System.out.println("\t adjacent Vertices for " + vertex + "   :" + adjacentVertices);
-    System.out.println();
     return Collections.unmodifiableList(adjacentVertices);
   }
-
 
   public List<Vertex> getAdjacentOutgoingVertices(Vertex vertex) {
     Set<Edge> adjacentEdges = getAdjacentOutgoingEdges(vertex);
     // System.out.println("\t\t " + vertex + ": adjacent Edges :" +
     // adjacentEdges);
     List<Vertex> adjacentOutgoingVertices = new ArrayList<>();
-    for(Edge edge : adjacentEdges) {
+    for (Edge edge : adjacentEdges) {
       adjacentOutgoingVertices.add(edge.getOtherVertex(vertex));
     }
     System.out.println("\t adjacent Vertices for " + vertex + "   :" + adjacentOutgoingVertices);
@@ -126,35 +115,31 @@ public class Graph {
     return Collections.unmodifiableList(adjacentOutgoingVertices);
   }
 
-
   public int getWeight(Edge edge) {
-    for(Edge e : edges) {
-      if(edge.equals(e)) {
+    for (Edge e : edges) {
+      if (edge.equals(e)) {
         return e.getWeight();
       }
     }
     return -1;
   }
 
-
   public Vertex getVertex(String vertex) {
-    for(Vertex v : vertices) {
-      if(v.getName().equals(vertex)) {
+    for (Vertex v : vertices) {
+      if (v.getName().equals(vertex)) {
         return v;
       }
     }
     return null;
   }
 
-
   public void sortEdgesByIncreasingWeights() {
     Collections.sort(edges, new Comparator<Edge>() {
       @Override
       public int compare(Edge o1, Edge o2) {
-        if(o1.getWeight() < o2.getWeight()) {
+        if (o1.getWeight() < o2.getWeight()) {
           return -1;
-        }
-        else if(o1.getWeight() > o2.getWeight()) {
+        } else if (o1.getWeight() > o2.getWeight()) {
           return 1;
         }
         return 0;
@@ -163,26 +148,22 @@ public class Graph {
     });
   }
 
-
   public String getName() {
     return name;
   }
 
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    for(Edge e : edges) {
+    for (Edge e : edges) {
       sb.append(e.toString() + '\n');
     }
     return sb.toString();
   }
 
-
   public static void main(String[] args) {
     buildGraph1();
   }
-
 
   /*
    * Graph1 in graphs.txt
@@ -206,7 +187,6 @@ public class Graph {
 
     return g;
   }
-
 
   /**
    * Graph2 in graphs.txt
@@ -240,7 +220,6 @@ public class Graph {
     return g;
   }
 
-
   public static Graph buildDirectedGraph1() {
     Graph g = new Graph("Directed graph For Bellman-Ford Algorithm");
     g.addEdge("S", "T", 6);
@@ -261,7 +240,6 @@ public class Graph {
     return g;
   }
 
-
   public static Graph buildDirectedGraph2() {
     Graph g = new Graph("Directed graph For Dijkstra's Algorithm");
     g.addEdge("S", "T", 10);
@@ -281,7 +259,6 @@ public class Graph {
 
     return g;
   }
-
 
   public static Graph buildDirectedGraph3() {
     Graph g = new Graph("Directed graph For Dijkstra's Algorithm with Cities in Romania");
