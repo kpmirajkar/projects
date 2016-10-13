@@ -16,7 +16,7 @@ public class Prim {
   public Prim(final Graph graph) {
     this.graph = graph;
   }
-  
+
   /**
    * Initialization of vertex key and parent. The start vertex key is set to 0.
    * 
@@ -37,21 +37,19 @@ public class Prim {
 
   private void algo(String root) {
     Vertex rootVertex = graph.getVertex(root);
-
     initializeSingleSource(rootVertex);
 
     Set<Vertex> mst = new LinkedHashSet<>();
     mst.add(rootVertex);
-    
+
     Queue<Vertex> vertices = new LinkedList<>();
     vertices.offer(rootVertex);
-    
-    while(!vertices.isEmpty()) {
+    while (!vertices.isEmpty()) {
       Vertex u = vertices.poll();
       List<Vertex> adjacentVertices = graph.getAdjacentVertices(u);
-      for(Vertex v : adjacentVertices) {
+      for (Vertex v : adjacentVertices) {
         int edgeWeight = graph.getWeight(u, v);
-        if(!mst.contains(v) && edgeWeight < v.getKey()) {
+        if (!mst.contains(v) && edgeWeight < v.getKey()) {
           v.setParent(u);
           v.setKey(edgeWeight);
           mst.add(v);
@@ -61,7 +59,6 @@ public class Prim {
     }
     System.out.println(mst);
   }
-
 
   public static void main(String[] args) {
     Graph graph = Graph.buildGraph2();
